@@ -1,0 +1,17 @@
+<h1>Тіркелу</h1>
+<form action={~p"/register"} method="post" class="grid gap-3 max-w-md">
+  <input type="email" name="user[email]" placeholder="Email" required />
+  <input type="password" name="user[password]" placeholder="Құпия сөз" required />
+
+  <select name="user[role]">
+    <option value="student">Оқушы</option>
+    <option value="teacher">Мұғалім</option>
+  </select>
+
+  <input type="text" name="user[city]" placeholder="Қала" />
+  <input type="text" name="user[school]" placeholder="Мектеп" />
+
+  <input type="number" name="user[grade]" placeholder="Сынып (оқушы болса)" min="1" max="12" />
+
+  <button class="btn">Тіркелу</button>
+</form>

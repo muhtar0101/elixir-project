@@ -1,0 +1,7 @@
+. <h1 class="text-xl font-semibold mb-4">Кіру</h1>
+<.simple_form for={~p"/login"} method="post">
+  <.input name="email" type="email" label="Email" required />
+  <.input name="password" type="password" label="Пароль" required />
+  <.button class="mt-2">Кіру</.button>
+</.simple_form>
+<p class="mt-2 text-sm">Аккаунт жоқ па? <.link navigate={~p"/register"}>Тіркелу</.link></p>

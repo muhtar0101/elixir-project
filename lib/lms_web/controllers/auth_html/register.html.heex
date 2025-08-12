@@ -1,0 +1,8 @@
+. <h1 class="text-xl font-semibold mb-4">Тіркелу</h1>
+<.simple_form for={~p"/register"} method="post">
+  <.input name="user[email]" type="email" label="Email" required />
+  <.input name="user[password]" type="password" label="Пароль (>=6)" required />
+  <.input name="user[role]" type="select" label="Рөлі" options={[{"Оқушы","student"}, {"Мұғалім","teacher"}]} />
+  <.button class="mt-2">Тіркелу</.button>
+</.simple_form>
+<p class="mt-2 text-sm">Аккаунт бар ма? <.link navigate={~p"/login"}>Кіру</.link></p>

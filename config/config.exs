@@ -1,0 +1,39 @@
+import Config
+
+config :lms, Lms.Repo,
+  database: "lms_db",
+  username: "lms",
+  password: "lms_pass",
+  hostname: "db",
+  stacktrace: true,
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 10
+
+config :lms,
+  ecto_repos: [Lms.Repo]
+
+config :lms, LmsWeb.Endpoint,
+  url: [host: "db"],
+  render_errors: [
+    formats: [html: LmsWeb.ErrorHTML, json: LmsWeb.ErrorJSON],
+    layout: false
+  ],
+  pubsub_server: Lms.PubSub,
+  live_view: [signing_salt: "LVsalt"]
+
+config :esbuild,
+  version: "0.21.5",
+  default: [
+    args:
+      ~w(js/app.js --bundle --target=es2020 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
+config :tailwind, version: "3.4.10",
+  default: [
+    args: ~w(--config=tailwind.config.js --input=css/app.css --output=../priv/static/assets/app.css),
+    cd: Path.expand("../assets", __DIR__)
+  ]
+
+import_config "#{config_env()}.exs"

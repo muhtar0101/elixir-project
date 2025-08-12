@@ -1,0 +1,21 @@
+defmodule LmsWeb.Layouts do
+  use LmsWeb, :html
+
+  def root(assigns) do
+    ~H"""
+    <!doctype html>
+    <html lang="kk">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>LMS</title>
+      <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+      <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}></script>
+    </head>
+    <body class="min-h-screen bg-gray-50">
+      <%= @inner_content %>
+    </body>
+    </html>
+    """
+  end
+end

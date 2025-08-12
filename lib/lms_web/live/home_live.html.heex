@@ -1,0 +1,11 @@
+<%= if @conn.assigns.current_user do %>
+  <p>Сәлем, <%= @conn.assigns.current_user.email %>!
+     <.link navigate={~p"/logout"}>Шығу</.link></p>
+<% else %>
+  <.link navigate={~p"/login"} class="underline">Кіру</.link>
+  <span> | </span>
+  <.link navigate={~p"/register"} class="underline">Тіркелу</.link>
+<% end %>
+
+<h1 class="text-3xl font-bold mt-6">Курстар</h1>
+<!-- әрі қарай бар тізім -->
