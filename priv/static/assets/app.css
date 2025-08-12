@@ -595,10 +595,6 @@ video {
   display: block;
 }
 
-.inline-block {
-  display: inline-block;
-}
-
 .flex {
   display: flex;
 }
@@ -794,6 +790,11 @@ video {
 
 .leading-tight {
   line-height: 1.25;
+}
+
+.text-zinc-600 {
+  --tw-text-opacity: 1;
+  color: rgb(82 82 91 / var(--tw-text-opacity));
 }
 
 .underline {

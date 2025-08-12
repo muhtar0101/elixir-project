@@ -2,14 +2,15 @@ defmodule LmsWeb.TeacherLive do
   use LmsWeb, :live_view
 
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok, assign(socket, page_title: "Мұғалім панелі")}
   end
 
   def render(assigns) do
     ~H"""
-    <h1 class="text-xl font-semibold">Мұғалім кабинеті</h1>
-    <p class="mt-2">Қош келдіңіз, <%= @current_user && @current_user.email %>!</p>
-    <.link href="/logout" method="delete" class="underline mt-4 inline-block">Шығу</.link>
+    <div class="p-6">
+      <h1 class="text-2xl font-bold">Мұғалім панелі</h1>
+      <p class="mt-2 text-sm text-zinc-600">Оқушылар тізімі, топтар, нәтижелер т.б. осында болады.</p>
+    </div>
     """
   end
 end

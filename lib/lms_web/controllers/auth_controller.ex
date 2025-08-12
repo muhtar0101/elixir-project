@@ -2,42 +2,49 @@ defmodule LmsWeb.AuthController do
   use LmsWeb, :controller
   alias Lms.Accounts
 
-  def register_form(conn, _), do: render(conn, :register)
-
-  def create_user(conn, %{"user" => %{"email" => e, "password" => p, "role" => r}}) do
-    case Accounts.register_user(%{email: e, password: p, role: r}) do
-      {:ok, _u} ->
-        conn
-        |> put_flash(:info, "Тіркелу сәтті. Енді кіріңіз.")
-        |> redirect(to: ~p"/login")
-      {:error, cs} ->
-        conn |> put_flash(:error, "Қате: #{inspect(cs.errors)}") |> redirect(to: ~p"/register")
-    end
+  # GET /login
+  def login_form(conn, _params) do
+    render(conn, :login)
   end
 
-  def login_form(conn, _), do: render(conn, :login)
-
-  def login(conn, %{"email" => e, "password" => p}) do
-    case Accounts.verify_user(e, p) do
-      {:ok, u} ->
+  # POST /login
+  def login(conn, %{"email" => email, "password" => pass}) do
+    case Accounts.verify_user(email, pass) do
+      {:ok, user} ->
         conn
-        |> put_session(:uid, u.id)
-        |> configure_session(renew: true)
+        |> put_session(:uid, user.id)
         |> put_flash(:info, "Қош келдіңіз!")
-        |> redirect(to: role_home(u))
-      {:error, _} ->
-        conn |> put_flash(:error, "Email немесе пароль қате") |> redirect(to: ~p"/login")
+        |> redirect(to: ~p"/")
+      _ ->
+        conn
+        |> put_flash(:error, "Email немесе пароль қате")
+        |> render(:login)
     end
   end
 
+  # GET /logout
   def logout(conn, _params) do
     conn
     |> configure_session(drop: true)
-    |> put_flash(:info, "Сіз шықтыңыз.")
     |> redirect(to: ~p"/")
   end
 
-  defp role_home(%{role: "teacher"}), do: ~p"/teacher"
-  defp role_home(%{role: "admin"}), do: ~p"/admin"
-  defp role_home(_), do: ~p"/me"
+  # GET /register
+  def register_form(conn, _params) do
+    render(conn, :register)
+  end
+
+  # POST /register
+  def create_user(conn, %{"email" => email, "password" => pass}) do
+    case Accounts.register_user(%{email: email, password: pass}) do
+      {:ok, _user} ->
+        conn
+        |> put_flash(:info, "Тіркелу сәтті!")
+        |> redirect(to: ~p"/login")
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:error, "Қате. Деректерді тексеріңіз.")
+        |> render(:register)
+    end
+  end
 end

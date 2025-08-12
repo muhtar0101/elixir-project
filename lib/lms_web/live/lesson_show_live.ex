@@ -23,9 +23,7 @@ defmodule LmsWeb.LessonShowLive do
     <%= case @lesson.lesson_type do %>
       <% :text -> %>
         <div class="prose max-w-none mt-4">
-          <%= Phoenix.HTML.raw(Earmark.as_html!(@lesson.content_md || "")) %>
-
-
+         <%= Phoenix.HTML.raw(Earmark.as_html!(@lesson.content_md || "")) %>
         </div>
 
       <% :video -> %>
