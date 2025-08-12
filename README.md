@@ -1,4 +1,3 @@
 # lms
 lms-elixir
-rr  ол
-rr  ол gfgfg ghgh
+rr  ол gfgfg ghgh gfgdfg
