@@ -55,3 +55,20 @@ Repo.get_by(Course, slug: "algebra-9") ||
     price_kzt: 10000,
     position: 2
   })
+# Admin user (қажет болса phx.gen.auth-тың Accounts.create_user/1 атауы өзгеше болуы мүмкін)
+{:ok, _admin} =
+  Accounts.register_user(%{
+    email: "admin@qazmath.net",
+    password: "Admin123!@#",
+    password_confirmation: "Admin123!@#"
+  })
+
+# Бір курс (міндетті published: true)
+Repo.insert!(%Course{
+  title: "Алгебра 10",
+  slug: "algebra-10",
+  description: "Алгебра курсы",
+  published: true,
+  price_kzt: 0,
+  position: 1
+})

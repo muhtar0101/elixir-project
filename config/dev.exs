@@ -22,3 +22,5 @@ config :lms, LmsWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
+# config/dev.exs
+config :lms, Lms.Mailer, adapter: Swoosh.Adapters.Local
