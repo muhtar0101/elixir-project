@@ -1,29 +1,25 @@
+# lib/lms/accounts/accounts.ex
 defmodule Lms.Accounts do
   import Ecto.Query, warn: false
   alias Lms.Repo
   alias Lms.Accounts.User
-  alias Bcrypt
 
-  def change_user(%User{} = user, attrs \\ %{}) do
-    User.registration_changeset(user, attrs)
-  end
+  # қажет жерлер қолданады
+  def get_user(id), do: Repo.get(User, id)
 
-  def register_user(attrs) do
-    %User{}
-    |> User.registration_changeset(attrs)
-    |> Repo.insert()
-  end
-
+  # Логин тексерісі
   def verify_user(email, password) do
     case Repo.get_by(User, email: email) do
       %User{} = u ->
-        if Bcrypt.verify_pass(password, u.hashed_password) do
+        if Bcrypt.verify_pass(password, u.password_hash) do
           {:ok, u}
         else
           {:error, :invalid_credentials}
         end
 
-      _ -> {:error, :not_found}
+      _ ->
+        Bcrypt.no_user_verify()
+        {:error, :invalid_credentials}
     end
   end
 end
