@@ -1,0 +1,13 @@
+{
+    "containers.commands.run": "${containerCommand} run --rm -d ${exposedPorts} ${tag}",
+    "elixirLS.envVariables": {
+    
+    }
+}
+     "elixirLS.dialyzerEnabled": false,
+     "elixirLS.fetchDeps": false,
+     "elixirLS.projectDir": "${workspaceFolder}",
+     "elixirLS.suggestSpecs": false,
+     "elixirLS.trace.server": "off",
+     "elixirLS.vsnMatch": false
+    }    
