@@ -4,6 +4,7 @@ defmodule Lms.MixProject do
   def project do
     [
       app: :lms,
+      
       version: "0.1.0",
       elixir: "~> 1.17",
       elixirc_paths: elixirc_paths(Mix.env()),
