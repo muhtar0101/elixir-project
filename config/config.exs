@@ -5,14 +5,17 @@ config :lms,
   ecto_repos: [Lms.Repo]
 
 # Repo: web контейнерінен Postgres-ке қосылу
+# config/config.exs ішіндегі Repo бөлігі:
 config :lms, Lms.Repo,
-  database: "lms_db",
-  username: "lms",
-  password: "lms_pass",
+  url: System.get_env("DATABASE_URL"),
   hostname: System.get_env("DB_HOST") || "db",
+  username: System.get_env("DB_USER") || "postgres",
+  password: System.get_env("DB_PASS") || "postgres",
+  database: System.get_env("DB_NAME") || "lms_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
+
 
 # Endpoint: ортақ параметрлер (url/http мұнда ЕМЕС)
 config :lms, LmsWeb.Endpoint,

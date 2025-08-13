@@ -1,6 +1,9 @@
+version: "3.9"
+
 services:
   db:
     image: postgres:16
+    container_name: lms_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -12,41 +15,51 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+    # (қалауыңыз бойынша) локалдан psql қосылу үшін:
+    # ports:
+    #   - "5433:5432"
 
   web:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: lms_web
     working_dir: /app
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "4001:4000"
-    env_file:
-      - .env
     environment:
       MIX_ENV: "dev"
       PHX_SERVER: "true"
       PHX_HOST: "localhost"
-      DB_HOST: "db"
       PORT: "4000"
-      # dev-та тікелей URL беру ыңғайлы (runtime.exs prod-та ғана ENV оқысын)
+
+      # DB env — Repo конфигімен сәйкестендірілді
+      DB_HOST: "db"
+      DB_USER: "postgres"
+      DB_PASS: "postgres"
+      DB_NAME: "lms_dev"
+
+      # Қаласаңыз, Ecto URL-ды да береміз (Repo url: ... қолданса)
       DATABASE_URL: "ecto://postgres:postgres@db:5432/lms_dev"
-      SECRET_KEY_BASE: "${SECRET_KEY_BASE}"
-      LIVE_VIEW_SIGNING_SALT: "${LIVE_VIEW_SIGNING_SALT}"
+
+      # Dev үшін default мәндер (егер .env жоқ болса)
+      SECRET_KEY_BASE: "${SECRET_KEY_BASE:-dev-secret-please-change}"
+      LIVE_VIEW_SIGNING_SALT: "${LIVE_VIEW_SIGNING_SALT:-devsalt}"
+    ports:
+      - "4001:4000"
     volumes:
-      # ЛОКАЛ КОД ↔ КОНТЕЙНЕР: өзгеріс бірден көрінеді
       - ./:/app
-      # build/deps/node_modules контейнер ішінде сақталсын (жинақ тезірек)
       - deps:/app/deps
       - build:/app/_build
       - node_modules:/app/assets/node_modules
     command: >
-      sh -lc "mix deps.get &&
-              mix ecto.create &&
-              mix ecto.migrate &&
-              mix phx.server"
+      sh -lc "
+        mix deps.get &&
+        mix ecto.create &&
+        mix ecto.migrate &&
+        mix phx.server
+      "
 
 volumes:
   pgdata:
