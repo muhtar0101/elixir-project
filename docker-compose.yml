@@ -43,8 +43,9 @@ services:
       DATABASE_URL: "ecto://postgres:postgres@db:5432/lms_dev"
 
       # Dev үшін default мәндер (егер .env жоқ болса)
-      SECRET_KEY_BASE: "${SECRET_KEY_BASE:-dev-secret-please-change}"
-      LIVE_VIEW_SIGNING_SALT: "${LIVE_VIEW_SIGNING_SALT:-devsalt}"
+      SECRET_KEY_BASE: "dev_secret_please_change_very_long_64_chars_min"
+      LIVE_VIEW_SIGNING_SALT: "dev_salt_please_change_123"
+      
     ports:
       - "4001:4000"
     volumes:
