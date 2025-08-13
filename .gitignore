@@ -13,3 +13,5 @@ readme.txt
 *.log
 
 printf "\n.env\n.env.*\n" >> .gitignore
+readme.txt
+[Rr]eadme.txt
