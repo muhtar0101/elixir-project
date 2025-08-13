@@ -40,6 +40,7 @@ defmodule LmsWeb.Admin.UsersLive do
     <div class="space-y-6">
       <h1 class="text-2xl font-semibold">Қолданушылар</h1>
 
+
       <div class="overflow-x-auto border rounded-2xl">
         <table class="min-w-full text-sm">
           <thead class="bg-gray-50">
