@@ -29,6 +29,7 @@ services:
       MIX_ENV: "dev"
       PHX_SERVER: "true"
       PHX_HOST: "localhost"
+      DB_HOST: "db"
       PORT: "4000"
       # dev-та тікелей URL беру ыңғайлы (runtime.exs prod-та ғана ENV оқысын)
       DATABASE_URL: "ecto://postgres:postgres@db:5432/lms_dev"
