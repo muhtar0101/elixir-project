@@ -19,11 +19,13 @@ defmodule LmsWeb.Router do
     live "/courses/:slug/lesson/:id", LessonShowLive, :show
 
     # Auth (бір данасы ғана)
-    get  "/login",     AuthController, :login_form
-    post "/login",     AuthController, :login
-    get  "/logout",    AuthController, :logout
-    get  "/register",  AuthController, :register_form
-    post "/register",  AuthController, :create_user
+    # Осылай қалдырыңыз:
+    get  "/login",    AuthController, :login_form
+    post "/login",    AuthController, :login
+    get  "/register", AuthController, :register_form
+    post "/register", AuthController, :create_user
+    get  "/logout",   AuthController, :logout
+
 
     # Purchase
     post "/purchase/:slug", PurchaseController, :create

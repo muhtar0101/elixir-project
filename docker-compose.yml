@@ -19,7 +19,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "4000:4000"
+      - "4002:4001"
     env_file:
       - .env
     environment:

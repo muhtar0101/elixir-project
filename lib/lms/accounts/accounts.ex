@@ -1,24 +1,29 @@
 defmodule Lms.Accounts do
-  import Ecto.Query
+  import Ecto.Query, warn: false
   alias Lms.Repo
   alias Lms.Accounts.User
-  alias Bcrypt, as: Pwd
+  alias Bcrypt
 
-  def get_user!(id), do: Repo.get!(User, id)
-  def get_user(id), do: Repo.get(User, id)
-  def get_user_by_email(email), do: Repo.get_by(User, email: email)
-
-  def register_user(attrs) do
-    %User{} |> User.registration_changeset(attrs) |> Repo.insert()
+  def change_user(%User{} = user, attrs \\ %{}) do
+    User.registration_changeset(user, attrs)
   end
 
-  @doc "Логин тексеру — логта warning болған verify_user/2 осында"
+  def register_user(attrs) do
+    %User{}
+    |> User.registration_changeset(attrs)
+    |> Repo.insert()
+  end
+
   def verify_user(email, password) do
-    with %User{} = u <- get_user_by_email(email),
-         true <- Pwd.verify_pass(password, u.password_hash) do
-      {:ok, u}
-    else
-      _ -> {:error, :invalid_credentials}
+    case Repo.get_by(User, email: email) do
+      %User{} = u ->
+        if Bcrypt.verify_pass(password, u.hashed_password) do
+          {:ok, u}
+        else
+          {:error, :invalid_credentials}
+        end
+
+      _ -> {:error, :not_found}
     end
   end
 end

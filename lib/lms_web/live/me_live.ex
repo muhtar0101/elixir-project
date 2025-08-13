@@ -1,15 +1,14 @@
+# lib/lms_web/live/me_live.ex
 defmodule LmsWeb.MeLive do
   use LmsWeb, :live_view
 
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Менің бетім")}
-  end
+  def mount(_params, _session, socket), do: {:ok, socket}
 
   def render(assigns) do
     ~H"""
     <div class="p-6">
-      <h1 class="text-2xl font-bold">Сәлем! Бұл — жеке кабинет.</h1>
-      <p class="mt-2 text-sm text-zinc-600">Мұнда сатып алған курстар мен нәтижелер шығады.</p>
+      <h1 class="text-xl font-bold">Менің аккаунтым</h1>
+      <p>Логиннен кейін осы бетке келесіз.</p>
     </div>
     """
   end
