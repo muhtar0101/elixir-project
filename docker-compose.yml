@@ -18,25 +18,34 @@ services:
     # ports:
     #   - "5433:5432"
 
-    web:
-      environment:
-        MIX_ENV: "dev"
-        PHX_SERVER: "true"
-        PHX_HOST: "localhost"
-        PORT: "4000"
-        DB_HOST: "db"
-        DB_USER: "postgres"
-        DB_PASS: "postgres"
-        DB_NAME: "lms_dev"
-        DATABASE_URL: "ecto://postgres:postgres@db:5432/lms_dev"
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lms_web
+    working_dir: /app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      MIX_ENV: "dev"
+      PHX_SERVER: "true"
+      PHX_HOST: "localhost"
+      PORT: "4000"
+      DB_HOST: "db"
+      DB_USER: "postgres"
+      DB_PASS: "postgres"
+      DB_NAME: "lms_dev"
+      DATABASE_URL: "ecto://postgres:postgres@db:5432/lms_dev"
 
-        # МІНДЕТТІ: 8+ символ
-        LIVE_VIEW_SIGNING_SALT: "dev_salt_please_change_123"
-        # Ұзын keybase қою жақсы
-        SECRET_KEY_BASE: "dev_secret_please_change_very_long_64_chars_min"
-      ports:
+      # МІНДЕТТІ: 8+ символ
+      LIVE_VIEW_SIGNING_SALT: "dev_salt_please_change_123"
+      # Ұзын keybase қою жақсы
+      SECRET_KEY_BASE: "dev_secret_please_change_very_long_64_chars_min"
+      
+    ports:
       - "4001:4000"
-      volumes:
+    volumes:
       - ./:/app
       - deps:/app/deps
       - build:/app/_build
@@ -47,8 +56,6 @@ services:
         mix ecto.create &&
         mix ecto.migrate &&
         mix phx.server
-      
-    
       "
 
 volumes:
