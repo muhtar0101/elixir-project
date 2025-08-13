@@ -38,9 +38,11 @@ defmodule LmsWeb.CourseShowLive do
       </ul>
 
       <%= unless @enrolled? do %>
-      <form class="mt-6" action={~p"/purchase/#{@course.slug}"} method="post">
-        <button class="px-4 py-2 rounded-2xl shadow">Сатып алу</button>
-      </form>
+      <form method="post" action={~p"/purchase/#{@course.slug}"} class="mt-4">
+  <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+  <button type="submit" class="btn btn-primary">Курсты сатып алу</button>
+</form>
+
       <% end %>
     </div>
     """
