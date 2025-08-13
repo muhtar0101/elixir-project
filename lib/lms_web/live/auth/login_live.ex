@@ -1,26 +1,24 @@
-defmodule LmsWeb.Auth.LoginLive do
-  use LmsWeb, :live_view
+def render(assigns) do
+  ~H"""
+  <div class="mx-auto max-w-md p-6">
+    <h1 class="text-2xl font-semibold mb-4">Кіру</h1>
 
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, csrf_token: Plug.CSRFProtection.get_csrf_token())}
-  end
+    <!-- Маңызды: CSRF токен міндетті -->
+    <form action={~p"/login"} method="post" class="space-y-3">
+      <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
 
-  def render(assigns) do
-    ~H"""
-    <div class="mx-auto max-w-md space-y-4">
-      <h1 class="text-2xl font-semibold">Кіру</h1>
-
-      <form action={~p"/login"} method="post" class="space-y-3">
-        <input type="hidden" name="_csrf_token" value={@csrf_token} />
-        <input type="email" name="email" placeholder="Email" required class="input input-bordered w-full" />
-        <input type="password" name="password" placeholder="Пароль" required class="input input-bordered w-full" />
-        <button type="submit" class="btn btn-primary w-full">Кіру</button>
-      </form>
-
-      <div class="pt-2">
-        <a href={~p"/logout"} class="underline text-sm">Шығу</a>
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">Email немесе Login</label>
+        <input name="user[identifier]" type="text" class="border rounded-md p-2" required />
       </div>
-    </div>
-    """
-  end
+
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">Пароль</label>
+        <input name="user[password]" type="password" class="border rounded-md p-2" required />
+      </div>
+
+      <button class="mt-2 px-4 py-2 rounded-md bg-blue-600 text-white">Кіру</button>
+    </form>
+  </div>
+  """
 end
