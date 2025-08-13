@@ -42,7 +42,7 @@ services:
       SECRET_KEY_BASE: "6JNrIxLuZF0wI02NenfxqXdR00I8TRfPYHh/zs/KxpV/+ov+7s15Tmue1lRK/pe1"
       
     ports:
-      - "4001:4000"
+      - "4000:4000"
     volumes:
       - ./:/app
       - deps:/app/deps
