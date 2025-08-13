@@ -1,37 +1,62 @@
 name: CI
-on: [push, pull_request]
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
 jobs:
   test:
     runs-on: ubuntu-latest
+
     services:
-      postgres:
+      db:
         image: postgres:16
         env:
-          POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
           POSTGRES_DB: lms_test
-        ports: ["5432:5432"]
+        ports:
+          - "5432:5432"
         options: >-
-          --health-cmd "pg_isready -U postgres -d lms_test"
-          --health-interval 5s --health-timeout 5s --health-retries 5
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      MIX_ENV: test
+      DB_HOST: localhost
+      DATABASE_URL: ecto://postgres:postgres@localhost:5432/lms_test
+      SECRET_KEY_BASE: test_secret_key_base_should_be_long
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: erlef/setup-beam@v1
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Elixir/OTP
+        uses: erlef/setup-beam@v1
         with:
-          elixir-version: '1.17.2'
-          otp-version: '27.0'
+          elixir-version: "1.17.2"
+          otp-version: "27.0.1"
+
       - name: Cache deps
         uses: actions/cache@v4
         with:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+
       - name: Get deps
         run: mix deps.get
-      - name: Setup DB URL
-        run: echo "DATABASE_URL=ecto://postgres:postgres@localhost:5432/lms_test" >> $GITHUB_ENV
-      - name: Create DB
-        run: mix ecto.create
+
       - name: Compile
         run: mix compile --warnings-as-errors
-      - name: Tests
+
+      - name: Prepare DB (create & migrate)
+        run: |
+          mix ecto.create
+          mix ecto.migrate
+
+      - name: Run tests
         run: mix test
