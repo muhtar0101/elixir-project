@@ -11,6 +11,10 @@ defmodule Lms.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
 
   def get_user_by_email(email) when is_binary(email), do: Repo.get_by(User, email: email)
+  
+  def get_user(id) when is_integer(id) or is_binary(id) do
+    Lms.Accounts.User |> Lms.Repo.get(id)
+  end
 
   # ==== CREATE ====
   def register_user(attrs), do: %User{} |> User.registration_changeset(attrs) |> Repo.insert()
