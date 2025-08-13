@@ -6,11 +6,12 @@ defmodule LmsWeb.UserAuth do
   - LiveView үшін on_mount беру
   - guard-плагтар: require_authenticated_user, require_admin
   """
+  use LmsWeb, :verified_routes          # <<< ~p үшін міндетті
   import Plug.Conn
   import Phoenix.Controller
   alias Lms.Accounts
 
-  ## --------- Plug-тар
+  ## --------- Plug-тар (router-де функция-ретінде қолданылады)
 
   # Router pipeline ішінде: plug :fetch_current_user
   def fetch_current_user(conn, _opts) do
