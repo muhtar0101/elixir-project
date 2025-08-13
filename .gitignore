@@ -11,3 +11,5 @@ readme.txt
 .env
 .env.*
 *.log
+
+printf "\n.env\n.env.*\n" >> .gitignore
