@@ -1,19 +1,25 @@
+# config/config.exs
 import Config
-
-config :lms, Lms.Repo,
-  database: "lms_db",
-  username: "lms",
-  password: "lms_pass",
-  hostname: "db",
-  stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
 
 config :lms,
   ecto_repos: [Lms.Repo]
 
+# Repo: web контейнері ішінен Postgres-ке қосылу
+config :lms, Lms.Repo,
+  database: "lms_db",
+  username: "lms",
+  password: "lms_pass",
+  hostname: System.get_env("DB_HOST") || "db",
+  stacktrace: true,
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 10
+
+# Endpoint: браузерден кіру хосты (сыртқы), PHX_HOST болмаса localhost
 config :lms, LmsWeb.Endpoint,
-  url: [host: "db"],
+  url: [
+    host: System.get_env("PHX_HOST") || "localhost",
+    port: String.to_integer(System.get_env("PORT") || "4000")
+  ],
   render_errors: [
     formats: [html: LmsWeb.ErrorHTML, json: LmsWeb.ErrorJSON],
     layout: false
