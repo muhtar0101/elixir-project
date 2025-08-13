@@ -1,3 +1,4 @@
+import LmsWeb.UserAuth
 defmodule LmsWeb.Router do
   use LmsWeb, :router
 
@@ -6,14 +7,14 @@ defmodule LmsWeb.Router do
   # Егер phx.gen.auth арқылы UserAuth модулі бар болса:
   # plug-тарды осылай қосамыз (fetch_current_user керек)
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, {LmsWeb.Layouts, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-    plug LmsWeb.UserAuth, :fetch_current_user
-  end
+  plug :accepts, ["html"]
+  plug :fetch_session
+  plug :fetch_live_flash
+  plug :put_root_layout, {LmsWeb.Layouts, :root}
+  plug :protect_from_forgery
+  plug :put_secure_browser_headers
+  plug :fetch_current_user   # <<< Назар: импортталған функция ретінде шақырамыз
+end
 
   pipeline :admin do
     plug LmsWeb.Plugs.RequireAdmin
