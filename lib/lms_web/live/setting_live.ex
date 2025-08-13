@@ -53,48 +53,45 @@ defmodule LmsWeb.SettingsLive do
   end
 
   def render(assigns) do
-    ~H"""
-    <div class="space-y-8">
-      <h1 class="text-2xl font-semibold">Параметрлер</h1>
+  ~H"""
+  <div class="space-y-8">
+    <h1 class="text-2xl font-semibold">Параметрлер</h1>
 
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="border rounded-2xl p-6">
-          <h2 class="text-lg font-medium mb-4">Профиль</h2>
-          <.simple_form for={@profile_cs} phx-change="validate_profile" phx-submit="save_profile">
-            <.input field={@profile_cs[:full_name]} label="Аты-жөні" />
-            <.input field={@profile_cs[:school]} label="Мектеп" />
-            <.input field={@profile_cs[:phone]} label="Телефон" />
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="border rounded-2xl p-6">
+        <h2 class="text-lg font-medium mb-4">Профиль</h2>
+        <.simple_form for={@profile_cs} phx-change="validate_profile" phx-submit="save_profile">
+          <.input field={@profile_cs[:full_name]} label="Аты-жөні" />
+          <.input field={@profile_cs[:school]} label="Мектеп" />
+          <.input field={@profile_cs[:phone]} label="Телефон" />
 
-            <%= if is_nil(@user.login) do %>
-              <.input field={@profile_cs[:login]} label="Login (бір рет)" />
-            <% else %>
-              <div class="text-sm text-gray-600">Login: <b><%= @user.login %></b> (өзгертілмейді)</div>
-            <% end %>
+          <%= if is_nil(@user.login) do %>
+            <.input field={@profile_cs[:login]} label="Login (бір рет)" />
+          <% else %>
+            <div class="text-sm text-gray-600">Login: <b><%= @user.login %></b> (өзгертілмейді)</div>
+          <% end %>
 
-            <:actions>
-              <.button phx-disable-with="Сақталуда...">Сақтау</.button>
-            </:actions>
-          </.simple_form>
-        </div>
+          <button type="submit" class="mt-3 px-4 py-2 rounded-md bg-blue-600 text-white">Сақтау</button>
+        </.simple_form>
+      </div>
 
-        <div class="border rounded-2xl p-6">
-  <h2 class="text-lg font-medium mb-4">Пароль</h2>
-  <.simple_form for={@password_cs} phx-change="validate_password" phx-submit="save_password">
-    <!-- Қарапайым input -->
-    <div class="flex flex-col gap-1">
-      <label for="curr_pwd" class="text-sm font-medium">Қазіргі пароль</label>
-      <input id="curr_pwd" name="user[current_password]" type="password" class="border rounded-md p-2" />
-    </div>
+      <div class="border rounded-2xl p-6">
+        <h2 class="text-lg font-medium mb-4">Пароль</h2>
+        <.simple_form for={@password_cs} phx-change="validate_password" phx-submit="save_password">
+          <div class="flex flex-col gap-1">
+            <label for="curr_pwd" class="text-sm font-medium">Қазіргі пароль</label>
+            <input id="curr_pwd" name="user[current_password]" type="password" class="border rounded-md p-2" />
+          </div>
 
-    <.input field={@password_cs[:password]} type="password" label="Жаңа пароль" />
-    <.input field={@password_cs[:password_confirmation]} type="password" label="Жаңа пароль (қайта)" />
+          <.input field={@password_cs[:password]} type="password" label="Жаңа пароль" />
+          <.input field={@password_cs[:password_confirmation]} type="password" label="Жаңа пароль (қайта)" />
 
-    <button type="submit" class="mt-3 px-4 py-2 rounded-md bg-blue-600 text-white">Жаңарту</button>
-  </.simple_form>
-</div>
-
+          <button type="submit" class="mt-3 px-4 py-2 rounded-md bg-blue-600 text-white">Жаңарту</button>
+        </.simple_form>
       </div>
     </div>
-    """
-  end
+  </div>
+  """
+end
+
 end

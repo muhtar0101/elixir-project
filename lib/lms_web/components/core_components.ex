@@ -1,7 +1,6 @@
 # lib/lms_web/components/core_components.ex
 defmodule LmsWeb.CoreComponents do
   use Phoenix.Component
-  import Phoenix.HTML
   import Phoenix.HTML.Form
 
 # ---- SIMPLE FORM ----
