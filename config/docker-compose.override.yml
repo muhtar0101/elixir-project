@@ -1,0 +1,12 @@
+services:
+  web:
+    volumes:
+      - .:/app
+      - elixir_build:/app/_build
+      - elixir_deps:/app/deps
+      - elixir_node:/app/assets/node_modules
+
+volumes:
+  elixir_build:
+  elixir_deps:
+  elixir_node:

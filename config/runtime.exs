@@ -1,3 +1,9 @@
+import Config
+
+if config_env() == :prod do
+  # Prod-қа өзіңнің PROD env-теріңді қойып аласың
+end
+
 host = System.get_env("PHX_HOST", "localhost")
 port = String.to_integer(System.get_env("PORT", "4000"))
 

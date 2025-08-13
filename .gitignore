@@ -1,13 +1,20 @@
+# Elixir build artifacts
 /_build
 /deps
 /cover
 /tmp
-/assets/node_modules
-/node_modules
-priv/static/assets/*
-!.keep
-.vscode/
-.env
 erl_crash.dump
+
+# Assets
+/node_modules
+/assets/node_modules
+priv/static/assets/*
+!priv/static/assets/.keep
+
+# Editor/OS
+.vscode/
 .DS_Store
 Thumbs.db
+
+# Env
+.env

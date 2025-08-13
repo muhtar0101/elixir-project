@@ -23,4 +23,4 @@ config :lms, LmsWeb.Endpoint,
     tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 # config/dev.exs
-config :lms, Lms.Mailer, adapter: Swoosh.Adapters.Local
+#config :lms, Lms.Mailer, adapter: Swoosh.Adapters.Local
