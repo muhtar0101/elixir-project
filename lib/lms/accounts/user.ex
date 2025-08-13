@@ -1,52 +1,91 @@
-# lib/lms/accounts/user.ex
 defmodule Lms.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @roles ~w(admin teacher student)a
+  @roles [:admin, :teacher, :student]
 
   schema "users" do
     field :email, :string
-    field :role,  :string, default: "student"
-    field :password_hash, :string
+    field :login, :string
+    field :full_name, :string
+    field :phone, :string
+    field :school, :string
+    field :role, Ecto.Enum, values: @roles, default: :student
 
-    # virtual (формадан келеді, БД-да сақталмайды):
     field :password, :string, virtual: true
+    field :password_confirmation, :string, virtual: true
+    field :hashed_password, :string
 
     timestamps()
   end
 
-  def changeset(user, attrs) do
+  # Жалпы валидация көмекшісі
+  defp base_changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :role, :password])
-    |> validate_required([:email, :role])
+    |> cast(attrs, [:email, :login, :full_name, :phone, :school, :role])
+    |> validate_format(:email, ~r/^\S+@\S+\.[\S]+$/)
+    |> validate_length(:login, min: 3)
+    |> validate_length(:full_name, min: 2)
+    |> unique_constraint(:email, name: :users_email_index)
+    |> unique_constraint(:login, name: :users_login_index)
   end
-  @doc """
-  Тіркеуге арналған changeset (құпиясөзді хэштап жазады).
-  """
+
+  # Тіркеу (user өзі немесе қарапайым create)
   def registration_changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password, :role])
+    |> base_changeset(attrs)
+    |> cast(attrs, [:password, :password_confirmation])
     |> validate_required([:email, :password])
-    |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/)
-    |> unique_constraint(:email)
     |> validate_length(:password, min: 6)
-    |> validate_inclusion(:role, Enum.map(@roles, &to_string/1))
+    |> validate_confirmation(:password, message: "Қайта енгізу сәйкес емес")
     |> put_password_hash()
   end
 
-  @doc """
-  Логинге арналған changeset (валидация ғана, хэштамайды).
-  """
-  def login_changeset(user, attrs) do
+  # Админ арқылы жаңа қолданушы жасау (роль/логин міндеттелуі мүмкін)
+  def admin_changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password])
-    |> validate_required([:email, :password])
+    |> base_changeset(attrs)
+    |> validate_required([:email, :role])
+    |> cast(attrs, [:password, :password_confirmation])
+    |> validate_length(:password, min: 6)
+    |> validate_confirmation(:password, message: "Қайта енгізу сәйкес емес")
+    |> put_password_hash()
   end
 
+  # Профильді қолданушының өзі өзгертуі
+  # login — тек бос болғанда ғана орнатамыз (бұрын бар болса өзгертуге тыйым)
+  def profile_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:full_name, :phone, :school])
+    |> then(fn cs ->
+      case {get_field(cs, :login) || user.login, user.login} do
+        {nil, nil} -> cast(cs, attrs, [:login]) |> validate_length(:login, min: 3)
+        {_, nil} -> cast(cs, attrs, [:login]) |> validate_length(:login, min: 3)
+        _ -> cs # login бұрын орнатылған болса, оны өзгерпейміз
+      end
+    end)
+    |> unique_constraint(:login, name: :users_login_index)
+  end
+
+  # Пароль өзгерту (қолданушы үшін)
+  def password_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:password, :password_confirmation])
+    |> validate_required([:password])
+    |> validate_length(:password, min: 6)
+    |> validate_confirmation(:password, message: "Қайта енгізу сәйкес емес")
+    |> put_password_hash()
+  end
+
+  # Админ парольін тікелей орнату
+  def admin_password_changeset(user, attrs), do: password_changeset(user, attrs)
+
   defp put_password_hash(changeset) do
-    if pwd = get_change(changeset, :password) do
-      change(changeset, password_hash: Bcrypt.hash_pwd_salt(pwd))
+    if password = get_change(changeset, :password) do
+      changeset
+      |> put_change(:hashed_password, Bcrypt.hash_pwd_salt(password))
+      |> delete_change(:password)
+      |> delete_change(:password_confirmation)
     else
       changeset
     end
