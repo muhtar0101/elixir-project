@@ -1,5 +1,21 @@
-<nav class="flex gap-4 text-sm">
-  <.link navigate={~p"/settings"}>Профиль</.link>
-  <.link navigate={~p"/admin/users"}>Админ: Қолданушылар</.link>
-</nav>
+<header class="border-b bg-white">
+  <div class="mx-auto max-w-6xl px-4 h-14 flex items-center gap-4">
+    <.link navigate={~p"/"} class="font-semibold">LMS</.link>
 
+    <!-- Админ сілтеме (тек админ көрсе) -->
+    <%= if @current_user && (@current_user.role == :admin || @current_user.role == "admin") do %>
+      <.link navigate={~p"/admin/users"} class="text-sm">Админ: Қолданушылар</.link>
+    <% end %>
+
+    <div class="ml-auto flex items-center gap-3 text-sm">
+      <%= if @current_user do %>
+        <span>Сәлем, <%= @current_user.full_name || @current_user.email %></span>
+        <.link navigate={~p"/settings"} class="underline">Профиль</.link>
+        <a href={~p"/logout"} class="underline">Шығу</a>
+      <% else %>
+        <.link navigate={~p"/login"} class="underline">Кіру</.link>
+        <.link navigate={~p"/register"} class="underline">Тіркелу</.link>
+      <% end %>
+    </div>
+  </div>
+</header>
