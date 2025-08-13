@@ -74,23 +74,33 @@ defmodule LmsWeb.Admin.UsersLive do
       </div>
 
       <div class="border rounded-2xl p-6">
-        <h2 class="text-xl font-medium mb-4">Жаңа қолданушы</h2>
-        <.simple_form for={@changeset} phx-change="validate" phx-submit="save">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <.input field={@changeset[:full_name]} label="Аты-жөні" />
-            <.input field={@changeset[:email]} type="email" label="Email" />
-            <.input field={@changeset[:login]} label="Login" />
-            <.input field={@changeset[:school]} label="Мектеп" />
-            <.input field={@changeset[:phone]} label="Телефон" />
-            <.input field={@changeset[:role]} type="select" options={[:admin, :teacher, :student]} label="Role" />
-            <.input field={@changeset[:password]} type="password" label="Пароль" />
-            <.input field={@changeset[:password_confirmation]} type="password" label="Пароль (қайта)" />
-          </div>
-          <:actions>
-            <.button phx-disable-with="Жүктелуде...">Қосу</.button>
-          </:actions>
-        </.simple_form>
+  <h2 class="text-xl font-medium mb-4">Жаңа қолданушы</h2>
+  <.simple_form for={@changeset} phx-change="validate" phx-submit="save">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <.input field={@changeset[:full_name]} label="Аты-жөні" />
+      <.input field={@changeset[:email]} type="email" label="Email" />
+      <.input field={@changeset[:login]} label="Login" />
+      <.input field={@changeset[:school]} label="Мектеп" />
+      <.input field={@changeset[:phone]} label="Телефон" />
+
+      <!-- БҰЛ ЖЕРЖЕ ҚАРАПАЙЫМ SELECT -->
+      <div class="flex flex-col gap-1">
+        <label for="user_role" class="text-sm font-medium">Role</label>
+        <select id="user_role" name="user[role]" class="border rounded-md p-2">
+          <option value="admin">admin</option>
+          <option value="teacher">teacher</option>
+          <option value="student">student</option>
+        </select>
       </div>
+
+      <.input field={@changeset[:password]} type="password" label="Пароль" />
+      <.input field={@changeset[:password_confirmation]} type="password" label="Пароль (қайта)" />
+    </div>
+
+    <!-- <:actions> орнына жай батырма -->
+    <button type="submit" class="mt-4 px-4 py-2 rounded-md bg-blue-600 text-white">Қосу</button>
+  </.simple_form>
+</div>
     </div>
     """
   end
