@@ -15,7 +15,7 @@ defmodule LmsWeb.Router do
 
     # Public pages
     live "/", HomeLive, :index
-    live "/login", LmsWeb.Auth.LoginLive, :index
+    live  "/login", LmsWeb.Auth.LoginLive, :index
     live "/courses/:slug", CourseShowLive, :show
     live "/courses/:slug/lesson/:id", LessonShowLive, :show
 
@@ -23,10 +23,11 @@ defmodule LmsWeb.Router do
     # Осылай қалдырыңыз:
     get  "/login",    AuthController, :login_form
     post "/login",    AuthController, :login
-    post "/login", AuthController, :create
+    post  "/login", LmsWeb.AuthController, :create
     get  "/register", AuthController, :register_form
     post "/register", AuthController, :create_user
-    get  "/logout",   AuthController, :logout
+    get   "/logout", LmsWeb.AuthController, :delete
+    delete "/logout", LmsWeb.AuthController, :delete
 
 
     # Purchase

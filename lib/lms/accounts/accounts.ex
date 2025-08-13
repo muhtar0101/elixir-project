@@ -1,13 +1,12 @@
-# lib/lms/accounts/accounts.ex
 defmodule Lms.Accounts do
   import Ecto.Query, warn: false
   alias Lms.Repo
   alias Lms.Accounts.User
 
-  # қажет жерлер қолданады
+  # Басқа жерлер (plug және т.б.) қолданады
   def get_user(id), do: Repo.get(User, id)
 
-  # Логин тексерісі
+  # Email+пароль тексерісі
   def verify_user(email, password) do
     case Repo.get_by(User, email: email) do
       %User{} = u ->
@@ -18,6 +17,7 @@ defmodule Lms.Accounts do
         end
 
       _ ->
+        # timing attack-қа қарсы
         Bcrypt.no_user_verify()
         {:error, :invalid_credentials}
     end
