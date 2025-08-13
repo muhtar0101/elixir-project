@@ -4,7 +4,7 @@ import Config
 config :lms,
   ecto_repos: [Lms.Repo]
 
-# Repo: web контейнері ішінен Postgres-ке қосылу
+# Repo: web контейнерінен Postgres-ке қосылу
 config :lms, Lms.Repo,
   database: "lms_db",
   username: "lms",
@@ -14,12 +14,8 @@ config :lms, Lms.Repo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
-# Endpoint: браузерден кіру хосты (сыртқы), PHX_HOST болмаса localhost
+# Endpoint: ортақ параметрлер (url/http мұнда ЕМЕС)
 config :lms, LmsWeb.Endpoint,
-  url: [
-    host: System.get_env("PHX_HOST") || "localhost",
-    port: String.to_integer(System.get_env("PORT") || "4000")
-  ],
   render_errors: [
     formats: [html: LmsWeb.ErrorHTML, json: LmsWeb.ErrorJSON],
     layout: false
