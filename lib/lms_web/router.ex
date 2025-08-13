@@ -29,9 +29,14 @@ end
   end
 
   scope "/admin", LmsWeb do
-    pipe_through [:browser, :admin]
-
+    pipe_through :browser
+    get   "/login",  AuthController, :login_form
+    post  "/login",  AuthController, :login
+    get   "/logout", AuthController, :logout
+    delete "/logout", AuthController, :logout
     live "/users", Admin.UsersLive, :index
     live "/users/:id/edit", Admin.UserEditLive, :edit
+    live "/", HomeLive, :index
+    live "/courses/:slug", CourseShowLive, :show
   end
 end

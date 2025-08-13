@@ -29,4 +29,5 @@ defmodule LmsWeb.CourseShowLive do
   </div>
   """
 end
+
 end
