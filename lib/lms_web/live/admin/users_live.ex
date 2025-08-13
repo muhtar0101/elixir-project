@@ -35,74 +35,72 @@ defmodule LmsWeb.Admin.UsersLive do
     end
   end
 
-  def render(assigns) do
-    ~H"""
-    <div class="space-y-6">
-      <h1 class="text-2xl font-semibold">Қолданушылар</h1>
+def render(assigns) do
+  ~H"""
+  <div class="space-y-6">
+    <h1 class="text-2xl font-semibold">Қолданушылар</h1>
 
-
-      <div class="overflow-x-auto border rounded-2xl">
-        <table class="min-w-full text-sm">
-          <thead class="bg-gray-50">
-            <tr class="text-left">
-              <th class="p-3">ID</th>
-              <th class="p-3">Аты-жөні</th>
-              <th class="p-3">Email</th>
-              <th class="p-3">Login</th>
-              <th class="p-3">Role</th>
-              <th class="p-3">Мектеп</th>
-              <th class="p-3">Телефон</th>
-              <th class="p-3">Әрекет</th>
+    <div class="overflow-x-auto border rounded-2xl">
+      <table class="min-w-full text-sm">
+        <thead class="bg-gray-50">
+          <tr class="text-left">
+            <th class="p-3">ID</th>
+            <th class="p-3">Аты-жөні</th>
+            <th class="p-3">Email</th>
+            <th class="p-3">Login</th>
+            <th class="p-3">Role</th>
+            <th class="p-3">Мектеп</th>
+            <th class="p-3">Телефон</th>
+            <th class="p-3">Әрекет</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for u <- @users do %>
+            <tr class="border-t hover:bg-gray-50">
+              <td class="p-3"><%= u.id %></td>
+              <td class="p-3"><%= u.full_name %></td>
+              <td class="p-3"><%= u.email %></td>
+              <td class="p-3"><%= u.login %></td>
+              <td class="p-3"><%= u.role %></td>
+              <td class="p-3"><%= u.school %></td>
+              <td class="p-3"><%= u.phone %></td>
+              <td class="p-3">
+                <.link navigate={~p"/admin/users/#{u.id}/edit"} class="underline">Өңдеу</.link>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            <%= for u <- @users do %>
-              <tr class="border-t hover:bg-gray-50">
-                <td class="p-3"><%= u.id %></td>
-                <td class="p-3"><%= u.full_name %></td>
-                <td class="p-3"><%= u.email %></td>
-                <td class="p-3"><%= u.login %></td>
-                <td class="p-3"><%= u.role %></td>
-                <td class="p-3"><%= u.school %></td>
-                <td class="p-3"><%= u.phone %></td>
-                <td class="p-3">
-                  <.link navigate={~p"/admin/users/#{u.id}/edit"} class="underline">Өңдеу</.link>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="border rounded-2xl p-6">
-  <h2 class="text-xl font-medium mb-4">Жаңа қолданушы</h2>
-  <.simple_form for={@changeset} phx-change="validate" phx-submit="save">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <.input field={@changeset[:full_name]} label="Аты-жөні" />
-      <.input field={@changeset[:email]} type="email" label="Email" />
-      <.input field={@changeset[:login]} label="Login" />
-      <.input field={@changeset[:school]} label="Мектеп" />
-      <.input field={@changeset[:phone]} label="Телефон" />
-
-      <!-- БҰЛ ЖЕРЖЕ ҚАРАПАЙЫМ SELECT -->
-      <div class="flex flex-col gap-1">
-        <label for="user_role" class="text-sm font-medium">Role</label>
-        <select id="user_role" name="user[role]" class="border rounded-md p-2">
-          <option value="admin">admin</option>
-          <option value="teacher">teacher</option>
-          <option value="student">student</option>
-        </select>
-      </div>
-
-      <.input field={@changeset[:password]} type="password" label="Пароль" />
-      <.input field={@changeset[:password_confirmation]} type="password" label="Пароль (қайта)" />
+          <% end %>
+        </tbody>
+      </table>
     </div>
 
-    <!-- <:actions> орнына жай батырма -->
-    <button type="submit" class="mt-4 px-4 py-2 rounded-md bg-blue-600 text-white">Қосу</button>
-  </.simple_form>
-</div>
+    <div class="border rounded-2xl p-6">
+      <h2 class="text-xl font-medium mb-4">Жаңа қолданушы</h2>
+      <.simple_form for={@changeset} phx-change="validate" phx-submit="save">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <.input field={@changeset[:full_name]} label="Аты-жөні" />
+          <.input field={@changeset[:email]} type="email" label="Email" />
+          <.input field={@changeset[:login]} label="Login" />
+          <.input field={@changeset[:school]} label="Мектеп" />
+          <.input field={@changeset[:phone]} label="Телефон" />
+
+          <div class="flex flex-col gap-1">
+            <label for="user_role" class="text-sm font-medium">Role</label>
+            <select id="user_role" name="user[role]" class="border rounded-md p-2">
+              <option value="admin">admin</option>
+              <option value="teacher">teacher</option>
+              <option value="student">student</option>
+            </select>
+          </div>
+
+          <.input field={@changeset[:password]} type="password" label="Пароль" />
+          <.input field={@changeset[:password_confirmation]} type="password" label="Пароль (қайта)" />
+        </div>
+
+        <button type="submit" class="mt-4 px-4 py-2 rounded-md bg-blue-600 text-white">Қосу</button>
+      </.simple_form>
     </div>
-    """
-  end
+  </div>
+  """
+end
+
 end
