@@ -4,8 +4,6 @@ import Config
 config :lms,
   ecto_repos: [Lms.Repo]
 
-# Repo: web контейнерінен Postgres-ке қосылу
-# config/config.exs ішіндегі Repo бөлігі:
 config :lms, Lms.Repo,
   url: System.get_env("DATABASE_URL"),
   hostname: System.get_env("DB_HOST") || "db",
@@ -16,15 +14,13 @@ config :lms, Lms.Repo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
-
-# Endpoint: ортақ параметрлер (url/http мұнда ЕМЕС)
 config :lms, LmsWeb.Endpoint,
   render_errors: [
     formats: [html: LmsWeb.ErrorHTML, json: LmsWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: Lms.PubSub,
-  live_view: [signing_salt: "LVsalt"]
+  pubsub_server: Lms.PubSub
+  # live_view мұнда ЕМЕС — dev/prod файлдарда
 
 config :esbuild,
   version: "0.21.5",
