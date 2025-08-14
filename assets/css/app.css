@@ -1,6 +1,8 @@
 /* assets/css/app.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Tailwind v4 content sources */
+@source "../js/**/*.js";
+@source "../lib/*_web/**/*.{ex,heex,eex,leex}";
 
 /* өз стильдеріңіз осында */

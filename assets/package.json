@@ -1,0 +1,11 @@
+{
+  "name": "lms-assets",
+  "private": true,
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0"
+  },
+  "scripts": {
+    "tw:dev": "tailwindcss -i ./css/app.css -o ../priv/static/assets/app.css --watch",
+    "tw:build": "tailwindcss -i ./css/app.css -o ../priv/static/assets/app.css -m"
+  }
+}
