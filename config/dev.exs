@@ -14,7 +14,7 @@ config :lms, LmsWeb.Endpoint,
   secret_key_base: System.get_env("SECRET_KEY_BASE") || "dev_secret_please_change_very_long",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
+    npm: ["run", "tw:dev", cd: Path.expand("../assets", __DIR__)]
   ]
 
 config :logger, :console, format: "[$level] $message\n"
